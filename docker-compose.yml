@@ -1,0 +1,25 @@
+version: '2'
+services:
+  server:
+    build: .
+    links:
+    - db
+    depends_on:
+    - db
+    ports:
+    - "$GLANCE_SERVER_PORT:$GLANCE_SERVER_PORT"
+    environment:
+      GLANCE_SERVER_PORT:
+      GLANCE_DB_HOSTNAME: db
+      GLANCE_DB_USER: glance
+      GLANCE_DB_PASSWORD: glance
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: glance
+      POSTGRES_PASSWORD: glance
+    volumes:
+    - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
